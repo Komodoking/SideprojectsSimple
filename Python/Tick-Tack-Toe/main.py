@@ -1,3 +1,5 @@
+import random
+
 def print_board(board):
     """
     Prints the current state of the Tic-Tac-Toe board.
@@ -6,9 +8,7 @@ def print_board(board):
     board (list of list of str): The game board to print, a 3x3 matrix.
     """
     for row in board:
-        # Join the elements of the row with ' | ' and print it
         print(" | ".join(row))
-        # Print a separator line
         print("-" * 5)
 
 def check_win(board, player):
@@ -22,15 +22,12 @@ def check_win(board, player):
     Returns:
     bool: True if the player has won, False otherwise.
     """
-    # Check rows for a win
     for row in board:
         if all([spot == player for spot in row]):
             return True
-    # Check columns for a win
     for col in range(3):
         if all([board[row][col] == player for row in range(3)]):
             return True
-    # Check diagonals for a win
     if all([board[i][i] == player for i in range(3)]) or all([board[i][2-i] == player for i in range(3)]):
         return True
     return False
@@ -46,59 +43,112 @@ def check_draw(board):
     bool: True if the game is a draw, False otherwise.
     """
     for row in board:
-        # If there is any empty spot, it's not a draw
         if any([spot == " " for spot in row]):
             return False
     return True
+
+def find_best_move(board, player):
+    """
+    Finds the best move for the AI player.
+
+    Args:
+    board (list of list of str): The game board.
+    player (str): The AI player, either 'X' or 'O'.
+
+    Returns:
+    tuple: The row and column of the best move.
+    """
+    opponent = 'X' if player == 'O' else 'O'
+
+    # Check for possible winning move
+    for r in range(3):
+        for c in range(3):
+            if board[r][c] == " ":
+                board[r][c] = player
+                if check_win(board, player):
+                    return (r, c)
+                board[r][c] = " "
+
+    # Check for possible blocking move
+    for r in range(3):
+        for c in range(3):
+            if board[r][c] == " ":
+                board[r][c] = opponent
+                if check_win(board, opponent):
+                    return (r, c)
+                board[r][c] = " "
+
+    # Choose a random corner if available
+    corners = [(0, 0), (0, 2), (2, 0), (2, 2)]
+    random.shuffle(corners)
+    for r, c in corners:
+        if board[r][c] == " ":
+            return (r, c)
+
+    # Choose the center if available
+    if board[1][1] == " ":
+        return (1, 1)
+
+    # Choose a random side if available
+    sides = [(0, 1), (1, 0), (1, 2), (2, 1)]
+    random.shuffle(sides)
+    for r, c in sides:
+        if board[r][c] == " ":
+            return (r, c)
+
+    # Choose a random move as a fallback
+    empty_spots = [(r, c) for r in range(3) for c in range(3) if board[r][c] == " "]
+    if empty_spots:
+        return random.choice(empty_spots)
 
 def tic_tac_toe():
     """
     Main function to play the Tic-Tac-Toe game.
     """
-    # Initialize the game board, a 3x3 matrix filled with spaces
-    board = [[" " for _ in range(3)] for _ in range(3)]
-    # Define the players, 'X' and 'O'
-    players = ["X", "O"]
-    # Start with the first player's turn
-    turn = 0
-    
     while True:
-        # Print the current state of the board
-        print_board(board)
-        # Determine the current player
-        player = players[turn % 2]
-        print(f"Player {player}'s turn")
+        # Initialize the game board, a 3x3 matrix filled with spaces
+        board = [[" " for _ in range(3)] for _ in range(3)]
+        players = ["X", "O"]
+        turn = 0
         
-        try:
-            # Prompt the player to enter row and column
-            row, col = map(int, input("Enter row and column (0, 1, or 2): ").split())
-            # Check if the chosen spot is already taken
-            if board[row][col] != " ":
-                print("Spot already taken. Try again.")
-                continue
-        except (ValueError, IndexError):
-            # Handle invalid input
-            print("Invalid input. Please enter row and column as two numbers (0, 1, or 2).")
-            continue
+        # Choose game mode
+        mode = input("Enter '1' for single player mode, '2' for multiplayer mode: ").strip()
         
-        # Place the player's mark on the board
-        board[row][col] = player
-        
-        # Check if the current player has won
-        if check_win(board, player):
+        while True:
             print_board(board)
-            print(f"Player {player} wins!")
+            player = players[turn % 2]
+            
+            if mode == '1' and player == 'O':
+                row, col = find_best_move(board, player)
+                board[row][col] = player
+            else:
+                print(f"Player {player}'s turn")
+                try:
+                    row, col = map(int, input("Enter row and column (0, 1, or 2): ").split())
+                    if board[row][col] != " ":
+                        print("Spot already taken. Try again.")
+                        continue
+                except (ValueError, IndexError):
+                    print("Invalid input. Please enter row and column as two numbers (0, 1, or 2).")
+                    continue
+                board[row][col] = player
+            
+            if check_win(board, player):
+                print_board(board)
+                print(f"Player {player} wins!")
+                break
+            
+            if check_draw(board):
+                print_board(board)
+                print("It's a draw!")
+                break
+            
+            turn += 1
+
+        play_again = input("Do you want to play again? (yes/no): ").strip().lower()
+        if play_again != 'yes':
+            print("Thanks for playing!")
             break
-        
-        # Check if the game is a draw
-        if check_draw(board):
-            print_board(board)
-            print("It's a draw!")
-            break
-        
-        # Switch to the next player's turn
-        turn += 1
 
 if __name__ == "__main__":
-    # Start the game
     tic_tac_toe()
