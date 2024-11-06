@@ -4,7 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arthur-Jozef Jr. Dybek - Portfolio</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file for styling -->
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        header, footer {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        header p, footer p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        section, article {
+            background-color: #fff;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 800px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #444;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: #0056b3;
+        }
+
+        ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -40,12 +120,12 @@
     <article id="portfolio">
         <h2>Portfolio</h2>
         <p>Relearning how to code series of projects</p>
-        <p>Python</p>
+        <p><strong>Python</strong></p>
         <ul>
             <li><a href="https://github.com/Komodoking/SideprojectsSimple/tree/main/Python/Tick-Tack-Toe">Tick-Tack-Toe</a> - Simple Tick-Tack-Toe game. Has a single-player and 2-player mode.</li>
             <li><a href="https://github.com/Komodoking/SideprojectsSimple/tree/main/Python/Snake%20Project">Pygame Snake</a> - Pygame Snake game with extra features like a pause menu and changing snake color.</li>
         </ul>
-        <p>Projects in the works:</p>
+        <p><strong>Projects in the works:</strong></p>
         <ul>    
             <li><a href="https://github.com/Komodoking/Brainrot-visual-Novel-Name-Pending">Renpy Visual Novel</a> - Not yet finished, but programming is approximately 80% complete. Awaiting assets from artists and final script review.</li>
         </ul>
